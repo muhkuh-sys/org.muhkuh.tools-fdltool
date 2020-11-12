@@ -1,0 +1,5 @@
+# Ignore all files in the targets folders.
+/targets/
+
+# Ignore all compiled python modules.
+*.pyc
