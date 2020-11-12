@@ -4,6 +4,7 @@ local FDL = class()
 function FDL:_init()
   local vstruct = require "vstruct"
   self.pl = require'pl.import_into'()
+  self.template = require 'pl.template'
   self.mhash = require 'mhash'
 
   self.tStructureFdlHeader = vstruct.compile([[
@@ -83,6 +84,69 @@ function FDL:_init()
     aucEndLabel:s12
   ]])
   self.sizFooter = 16
+
+  self.strPrettyPrint = [[
+  tBasicDeviceData
+    usManufacturerID:              $(string.format('%d', data.tBasicDeviceData.usManufacturerID))
+    usDeviceClassificationNumber:  $(string.format('%d', data.tBasicDeviceData.usDeviceClassificationNumber))
+    ulDeviceNumber:                $(string.format('%d', data.tBasicDeviceData.ulDeviceNumber))
+    ulSerialNumber:                $(string.format('%d', data.tBasicDeviceData.ulSerialNumber))
+    ucHardwareCompatibilityNumber: $(string.format('%d', data.tBasicDeviceData.ucHardwareCompatibilityNumber))
+    ucHardwareRevisionNumber:      $(string.format('%d', data.tBasicDeviceData.ucHardwareRevisionNumber))
+    usProductionDate:              $(string.format('0x%04x', data.tBasicDeviceData.usProductionDate))
+    ucReserved1:                   $(string.format('0x%02x', data.tBasicDeviceData.ucReserved1))
+    ucReserved2:                   $(string.format('0x%0x2', data.tBasicDeviceData.ucReserved2))
+    aucReservedFields:             [$(hexdump(data.tBasicDeviceData.aucReservedFields))]
+
+  atMacCOM
+# for uiCnt, tMac in ipairs(data.atMacCOM) do
+    aucMAC[$(string.format('%d', uiCnt))]:      $(macdump(tMac.aucMAC))
+    aucReserved[$(string.format('%d', uiCnt))]: [$(hexdump(tMac.aucReserved))]
+# end
+
+  atMacAPP
+# for uiCnt, tMac in ipairs(data.atMacAPP) do
+    aucMAC[$(string.format('%d', uiCnt))]:      $(macdump(tMac.aucMAC))
+    aucReserved[$(string.format('%d', uiCnt))]: [$(hexdump(tMac.aucReserved))]
+# end
+
+  tProductIdentification
+    usUSBVendorID:     $(string.format('0x%04x', data.tProductIdentification.usUSBVendorID))
+    usUSBProductID:    $(string.format('0x%04x', data.tProductIdentification.usUSBProductID))
+    aucUSBVendorName:  [$(asciihexdump(data.tProductIdentification.aucUSBVendorName))]
+    aucUSBProductName: [$(asciihexdump(data.tProductIdentification.aucUSBProductName))]
+    aucReservedFields: [$(hexdump(data.tProductIdentification.aucReservedFields))]
+
+  tOEMIdentification
+    ulOEMDataOptionFlags:     $(string.format('0x%08x', data.tOEMIdentification.ulOEMDataOptionFlags))
+    aucOEMSerialNumber:       [$(asciihexdump(data.tOEMIdentification.aucOEMSerialNumber))]
+    aucOEMOrderNumber:        [$(asciihexdump(data.tOEMIdentification.aucOEMOrderNumber))]
+    aucOEMHardwareRevision:   [$(asciihexdump(data.tOEMIdentification.aucOEMHardwareRevision))]
+    aucOEMProductionDateTime: [$(asciihexdump(data.tOEMIdentification.aucOEMProductionDateTime))]
+    aucOEMReservedFields:     [$(hexdump(data.tOEMIdentification.aucOEMReservedFields))]
+    aucOEMSpecificData:       [$(asciihexdump(data.tOEMIdentification.aucOEMSpecificData))]
+
+  tFlashLayout
+# for uiCnt, tArea in ipairs(data.tFlashLayout.atArea) do
+    atArea[$(string.format('%02d', uiCnt))]
+      ulAreaContentType:     $(string.format('0x%08x', tArea.ulAreaContentType))
+      ulAreaStartAddress:    $(string.format('0x%08x', tArea.ulAreaStartAddress))
+      ulAreaSize:            $(string.format('0x%08x', tArea.ulAreaSize))
+      ulChipNumber:          $(string.format('0x%08x', tArea.ulChipNumber))
+      aucAreaName:           "$(escape(tArea.aucAreaName))"
+      ucAreaAccessType:      $(string.format('0x%02x', tArea.ucAreaAccessType))
+      aucReserved:           [$(hexdump(tArea.aucReserved))]
+# end
+
+# for uiCnt, tChip in ipairs(data.tFlashLayout.atChip) do
+    atChip[$(string.format('%02d', uiCnt))]
+      ulChipNumber:          $(string.format('0x%08x', tChip.ulChipNumber))
+      aucFlashDriverName:    "$(escape(tChip.aucFlashDriverName))"
+      ulBlockSize:           $(string.format('0x%08x', tChip.ulBlockSize))
+      ulFlashSize:           $(string.format('0x%08x', tChip.ulFlashSize))
+      ulMaxEraseWriteCycles: $(string.format('%d', tChip.ulMaxEraseWriteCycles))
+# end
+  ]]
 end
 
 
@@ -138,6 +202,50 @@ function FDL:bin2fdl(strFdl)
   end
 
   return tFDLContents
+end
+
+
+
+function FDL:fdl2prettyPrint(tFdl)
+  local template = self.template
+  local tEnv = {
+    data=tFdl,
+    ipairs=_G.ipairs,
+    string=_G.string,
+    table=_G.table,
+
+    escape=function(a)
+      return string.gsub(a, '[^%g ]', function(s) return string.format('\\%02x', string.byte(s)) end)
+    end,
+
+    asciihexdump=function(a)
+      local t={}
+      for i=1,#a do
+        local c = string.sub(a, i, i)
+        if string.match(c, '[%g ]')==nil then
+          table.insert(t, string.format('0x%02x', string.byte(c)))
+        else
+          table.insert(t, string.format(' "%s"', c))
+        end
+      end
+      return table.concat(t, ', ')
+    end,
+    hexdump=function(a)
+      local t={}
+      for i=1,#a do
+        table.insert(t, string.format('0x%02x', string.byte(a, i)))
+      end
+      return table.concat(t, ', ')
+    end,
+    macdump=function(a)
+      local t={}
+      for i=1,#a do
+        table.insert(t, string.format('%02x', string.byte(a, i)))
+      end
+      return table.concat(t, ':')
+    end
+  }
+  return template.substitute(self.strPrettyPrint, tEnv)
 end
 
 
