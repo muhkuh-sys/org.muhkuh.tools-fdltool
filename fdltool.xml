@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jonchki-artifact version="1.0">
 	<info group="org.muhkuh.tools"
-	      module="fdl"
-	      artifact="fdl"
+	      module="fdltool"
+	      artifact="fdltool"
 	      version="0.0.1"
 	      vcs-id="${PROJECT_VERSION_VCS}"
 	      extension="tar.gz">

@@ -1,4 +1,4 @@
-local __APPLICATION__ = 'fdl'
+local __APPLICATION__ = 'fdltool'
 local __VERSION__ = '1.0.0'
 
 local FDL = require 'fdl'

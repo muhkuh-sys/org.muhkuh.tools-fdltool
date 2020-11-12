@@ -77,7 +77,7 @@ strCfg_jonchkiDependencyLog = os.path.join(
 )
 # This is the artifact configuration file.
 # NOTE: this file will be created by the Jonchki prepare script.
-strCfg_artifactConfiguration = 'fdl.xml'
+strCfg_artifactConfiguration = 'fdltool.xml'
 
 # -
 # --------------------------------------------------------------------------

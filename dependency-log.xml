@@ -11,7 +11,7 @@
 		<dependency group="de.dkolf" module="dkjson" artifact="dkjson" version="2.5.2.2"/>
 		<dependency group="org.lua" module="lua" artifact="lua" version="5.4.0.6"/>
 		<dependency group="org.muhkuh.lua" module="mhash" artifact="lua5.4-mhash" version="0.9.9.9.7"/>
-		<dependency group="org.muhkuh.tools" module="fdl" artifact="fdl" version="0.0.1"/>
+		<dependency group="org.muhkuh.tools" module="fdltool" artifact="fdltool" version="0.0.1"/>
 	</dependencies>
 	<build-dependencies>
 	</build-dependencies>
