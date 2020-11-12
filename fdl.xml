@@ -14,9 +14,11 @@
 	</info>
 	<dependencies>
 		<dependency group="org.lua" module="lua" artifact="lua" version="5.4"/>
+		<dependency group="com.github.moteus" module="lua-log" artifact="lua-log" version="0.1"/>
 		<dependency group="com.github.mpeterv" module="argparse" artifact="argparse" version="0.6"/>
 		<dependency group="org.muhkuh.lua" module="mhash" artifact="lua5.4-mhash" version="0.9.9.9"/>
 		<dependency group="com.github.stevedonovan" module="penlight" artifact="penlight" version="1.7"/>
 		<dependency group="com.github.toxicfrog" module="vstruct" artifact="vstruct" version="2.1"/>
+		<dependency group="de.dkolf" module="dkjson" artifact="dkjson" version="2.5"/>
 	</dependencies>
 </jonchki-artifact>

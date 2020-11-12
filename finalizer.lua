@@ -6,7 +6,7 @@ t:install{
   ['local/lua/fdl.lua']                                    = '${install_lua_path}/',
 
   -- Install all scripts.
-  ['local/decode_fdl.lua']                                 = '${install_base}/',
+  ['local/fdl.lua']                                        = '${install_base}/',
   ['local/fdl_to_wfp_template.lua']                        = '${install_base}/',
 
   ['${report_path}']                                       = '${install_base}/.jonchki/'
