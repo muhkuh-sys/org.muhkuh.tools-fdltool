@@ -32,6 +32,7 @@ local atKnownFlashAreas = {
   ['FDL']          = { isErase = false, strFile = '*.fdl' },
   ['FW']           = { isErase = false, strFile = '*.nxi' },
   ['HWConfig_MFW'] = { isErase = false, strFile = '*.mwc' },
+  ['MFW_HWConfig'] = { isErase = false, strFile = '*.mwc' },
   ['Maintenance']  = { isErase = false, strFile = '*.mxf' },
   ['FWcont']       = { isErase = false, strFile = '*.nxe' },
   ['Filesystem']   = { isErase = false, strFile = 'filesystem*.bin' },
