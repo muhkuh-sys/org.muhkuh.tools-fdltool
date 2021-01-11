@@ -7,6 +7,13 @@ local dkjson = require 'dkjson'
 local pl = require'pl.import_into'()
 
 local atLogLevels = {
+  'debug',
+  'info',
+  'warning',
+  'error',
+  'fatal'
+}
+local atTranslateLogLevels = {
   ['debug'] = 'debug',
   ['info'] = 'info',
   ['warning'] = 'warning',
@@ -97,9 +104,9 @@ tParser:option('--output-type')
   :default(nil)
   :target('strOutputType')
 tParser:option('-v --verbose')
-  :description(string.format('Set the verbosity level to LEVEL. Possible values for LEVEL are %s.', table.concat(pl.tablex.keys(atLogLevels), ', ')))
+  :description(string.format('Set the verbosity level to LEVEL. Possible values for LEVEL are %s.', table.concat(atLogLevels, ', ')))
   :argname('<LEVEL>')
-  :convert(atLogLevels)
+  :convert(atTranslateLogLevels)
   :default('warning')
   :target('strLogLevel')
 tParser:option('-s --skip-input')
