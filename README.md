@@ -181,10 +181,10 @@ brynhild@hidin:~/fdltool-0.0.2$ cat demo/patch_mac_and_oem.json
     "aucOEMSerialNumber":"23456"
   },
   "atMacCOM":{
-    { "aucMAC":"123456" },
-    { "aucMAC":"234567" },
-    { "aucMAC":"345678" },
-    { "aucMAC":"456789" }
+    { "aucMAC":"01:23:45:67:89:ab" },
+    { "aucMAC":"45:67:89:ab:cd:ef" },
+    { "aucMAC":"ef:cd:ab:89:67:45" },
+    { "aucMAC":"ab:89:67:45:23:01" }
   }
 }
 brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua --patch demo/patch_mac_and_oem.json demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl patched.fdl
@@ -197,19 +197,19 @@ brynhild@hidin:~/fdltool-0.0.2$ diff -uNr FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
  
    atMacCOM[1]
 -    aucMAC:      02:00:00:1e:99:00
-+    aucMAC:      31:32:33:34:35:36
++    aucMAC:      01:23:45:67:89:ab
      aucReserved: [ 0x00, 0x00 ]
    atMacCOM[2]
 -    aucMAC:      02:00:00:1e:99:01
-+    aucMAC:      32:33:34:35:36:37
++    aucMAC:      45:67:89:ab:cd:ef
      aucReserved: [ 0x00, 0x00 ]
    atMacCOM[3]
 -    aucMAC:      02:00:00:1e:99:02
-+    aucMAC:      33:34:35:36:37:38
++    aucMAC:      ef:cd:ab:89:67:45
      aucReserved: [ 0x00, 0x00 ]
    atMacCOM[4]
 -    aucMAC:      02:00:00:1e:99:03
-+    aucMAC:      34:35:36:37:38:39
++    aucMAC:      ab:89:67:45:23:01
      aucReserved: [ 0x00, 0x00 ]
  
    atMacAPP[1]
@@ -226,6 +226,15 @@ brynhild@hidin:~/fdltool-0.0.2$ diff -uNr FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
      aucOEMReservedFields:     [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
 ...
 ```
+
+### MAC encoding
+
+Please note that a MAC address in JSON input can be specified in 2 ways. This is valid for patch files and complete FDL definitions in JSON.
+
+The first solution uses a normal string, which is quite quikry. It must be 6 characters long and each character defines one byte of the MAC with its ASCII value. Example: the string "123456" would translate to the MAC 31:32:33:34:35:36 .
+This solution is only reommended if you have some tool spitting out a JSON with a properly escaped string for the MAC. It is definitely not recommended for handcrafted JSONs.
+
+The second solution is shown in above example. It is a human readable MAC in the form ```xx:xx:xx:xx:xx:xx``` .
 
 ## File type detection
 
