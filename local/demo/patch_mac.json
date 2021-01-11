@@ -1,8 +1,8 @@
 {
   "atMacCOM":{
-    { "aucMAC":"123456" },
-    { "aucMAC":"234567" },
-    { "aucMAC":"345678" },
-    { "aucMAC":"456789" }
+    { "aucMAC":"01:23:45:67:89:ab" },
+    { "aucMAC":"45:67:89:ab:cd:ef" },
+    { "aucMAC":"ef:cd:ab:89:67:45" },
+    { "aucMAC":"ab:89:67:45:23:01" }
   }
 }
