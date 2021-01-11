@@ -1,5 +1,5 @@
 local __APPLICATION__ = 'fdltool'
-local __VERSION__ = '1.0.0'
+local __VERSION__ = '${root_artifact_version}'
 
 local FDL = require 'fdl'
 local argparse = require 'argparse'
