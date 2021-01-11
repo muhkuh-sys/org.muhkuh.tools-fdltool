@@ -34,7 +34,7 @@ Download the [release](https://github.com/muhkuh-sys/org.muhkuh.tools-fdltool/re
 Open a shell, command prompt or power shell in the newly created folder. It should look similar to this:
 
 ```
-brynhild@hidin:~/fdltool-0.0.1$ ls -l
+brynhild@hidin:~/fdltool-0.0.2$ ls -l
 total 508
 drwxrwxr-x 2 brynhild brynhild   4096 Nov 12 23:28 demo
 drwxrwxr-x 2 brynhild brynhild   4096 Nov 12 23:26 doc
@@ -56,11 +56,11 @@ Run the LUA5.4 interpreter with the fdltool.lua script and ```--help```: ```./lu
 
 Example:
 ```
-brynhild@hidin:~/fdltool-0.0.1$ ./lua5.4 fdltool.lua --help
+brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua --help
 Usage: fdltool ([--color] | [--no-color]) [--version]
        [-p <PATCH_FILE>] [--input-type <IN_TYPE>]
-       [--output-type <OUT_TYPE>] [-v <LEVEL>] [-s <SKIP>] [-l <FILE>]
-       [-h] <IN_FILE> [<OUT_FILE>]
+       [--output-type <OUT_TYPE>] [-v <LEVEL>] [-s <SKIP>] [-p <SIZE>]
+       [--padding-byte <BYTE>] [-l <FILE>] [-h] <IN_FILE> [<OUT_FILE>]
 
 Decode, patch and convert FDLs.
 
@@ -76,10 +76,13 @@ Options:
                          Do not guess the type of the input file but set it to IN_TYPE. Possible values for IN_TYPE are BIN, JSON.
    --output-type <OUT_TYPE>
                          Do not guess the type of the output file but set it to OUT_TYPE. Possible values for OUT_TYPE are BIN, JSON, TXT.
-          -v <LEVEL>,    Set the verbosity level to LEVEL. Possible values for LEVEL are info, fatal, warning, debug, error. (default: warning)
+          -v <LEVEL>,    Set the verbosity level to LEVEL. Possible values for LEVEL are debug, info, warning, error, fatal. (default: warning)
    --verbose <LEVEL>
              -s <SKIP>,  Skip the first SKIP bytes when reading a binary input. The default is to skip no bytes.
    --skip-input <SKIP>
+      -p <SIZE>,         Pad binary output to a minimum size of SIZE. The default is 0 which adds no padding.
+   --pad <SIZE>
+   --padding-byte <BYTE> Use BYTE for padding. The default is 0xff .
           -l <FILE>,     Write all output to FILE.
    --logfile <FILE>
    --color               Use colors to beautify the console output. This is the default on Linux.
@@ -94,7 +97,7 @@ Run the LUA5.4 interpreter with the fdltool.lua script and a FDL file as paramet
 
 Example:
 ```
-brynhild@hidin:~/fdltool-0.0.1$ ./lua5.4 fdltool.lua demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl
+brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl
   tBasicDeviceData
     usManufacturerID:              1
     usDeviceClassificationNumber:  69
@@ -130,8 +133,8 @@ Just add the output file as another parameter: ```./lua5.4 fdltool.lua input.fdl
 
 Example:
 ```
-brynhild@hidin:~/fdltool-0.0.1$ ./lua5.4 fdltool.lua demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
-brynhild@hidin:~/fdltool-0.0.1$ cat FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
+brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
+brynhild@hidin:~/fdltool-0.0.2$ cat FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
   tBasicDeviceData
     usManufacturerID:              1
     usDeviceClassificationNumber:  69
@@ -148,8 +151,8 @@ Simply specify a ".json" file instead of the ".txt": ```./lua5.4 fdltool.lua inp
 
 Example:
 ```
-brynhild@hidin:~/fdltool-0.0.1$ ./lua5.4 fdltool.lua demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl FDL_NXHX90-JTAG_7833000r3_UseCaseC.json
-brynhild@hidin:~/fdltool-0.0.1$ cat FDL_NXHX90-JTAG_7833000r3_UseCaseC.json
+brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl FDL_NXHX90-JTAG_7833000r3_UseCaseC.json
+brynhild@hidin:~/fdltool-0.0.2$ cat FDL_NXHX90-JTAG_7833000r3_UseCaseC.json
 {
   "tProductIdentification":{
     "usUSBProductID":0,
@@ -171,7 +174,7 @@ Patches are specified as JSON files. The data must be a subset of a complete FDL
 
 Example:
 ```
-brynhild@hidin:~/fdltool-0.0.1$ cat demo/patch_mac_and_oem.json 
+brynhild@hidin:~/fdltool-0.0.2$ cat demo/patch_mac_and_oem.json
 {
   "tOEMIdentification":{
     "aucOEMOrderNumber":"1234.567",
@@ -184,9 +187,9 @@ brynhild@hidin:~/fdltool-0.0.1$ cat demo/patch_mac_and_oem.json
     { "aucMAC":"456789" }
   }
 }
-brynhild@hidin:~/fdltool-0.0.1$ ./lua5.4 fdltool.lua --patch demo/patch_mac_and_oem.json demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl patched.fdl
-brynhild@hidin:~/fdltool-0.0.1$ ./lua5.4 fdltool.lua patched.fdl patched.txt
-brynhild@hidin:~/fdltool-0.0.1$ diff -uNr FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt patched.txt
+brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua --patch demo/patch_mac_and_oem.json demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl patched.fdl
+brynhild@hidin:~/fdltool-0.0.2$ ./lua5.4 fdltool.lua patched.fdl patched.txt
+brynhild@hidin:~/fdltool-0.0.2$ diff -uNr FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt patched.txt
 --- FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt	2020-11-12 23:36:01.391919727 +0100
 +++ patched.txt	2020-11-12 23:46:35.611491985 +0100
 @@ -11,16 +11,16 @@
@@ -227,6 +230,22 @@ brynhild@hidin:~/fdltool-0.0.1$ diff -uNr FDL_NXHX90-JTAG_7833000r3_UseCaseC.txt
 ## File type detection
 
 The FDL tool tries to detect the type of files based on their suffix. ".json" files are JSON, ".txt" files are text and all others are assumed to be binary. This should do for most of the situations. For the special stuff you can force the input and output type with the ```--input-type``` and ```--output-type``` options. See the help message for the possible values.
+
+## Padding of binary output
+
+Sometimes an FDL does not live alone in it's flash sector. There might be other contents appended, like a taglist. In this case it is very handy to have the FDL padded to a defined size.
+
+Padding can be activated with the -p/--pad option. The following example pads the FDL to a size of 1024 bytes.
+
+```
+brynhild@hidin:~/fdltool-0.0.2$ % ./lua5.4 fdltool.lua --patch demo/patch_mac_and_oem.json --pad 0x0400 demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl patched.fdl
+brynhild@hidin:~/fdltool-0.0.2$  % ls -l patched.fdl
+-rw-rw-r-- 1 brynhild brynhild   1024 Jan 11 22:16 patched.fdl
+
+```
+
+Padding is done with 0xff by default. This is a good choice for all flash storages as erased sectors are filled with this pattern. Padding with 0xff just resembles unused space.
+However you can change the padding byte with the option "--padding-byte".
 
 # And what now?
 
