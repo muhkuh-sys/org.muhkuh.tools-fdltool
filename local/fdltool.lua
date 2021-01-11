@@ -174,7 +174,8 @@ if tArgs.strLogFileName~=nil then
 end
 
 -- Combine all writers.
-if LUA_VER_NUM==501 then
+local tLogWriter
+if _G.LUA_VER_NUM==501 then
   tLogWriter = require 'log.writer.list'.new(unpack(atLogWriters))
 else
   tLogWriter = require 'log.writer.list'.new(table.unpack(atLogWriters))
@@ -289,9 +290,9 @@ if tArgs.strPatchFile~=nil then
   end
 
   -- Convert the JSON data to a table.
-  local tPatchData, strError = dkjson.decode(strPatchData)
+  local tPatchData, strJsonError = dkjson.decode(strPatchData)
   if tPatchData==nil then
-    tLog.error('Failed to parse the JSON data: %s', strError)
+    tLog.error('Failed to parse the JSON data: %s', strJsonError)
     error('Patch file is no valid JSON.')
   end
 
