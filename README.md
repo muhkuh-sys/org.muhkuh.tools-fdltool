@@ -235,7 +235,7 @@ The FDL tool tries to detect the type of files based on their suffix. ".json" fi
 
 Sometimes an FDL does not live alone in it's flash sector. There might be other contents appended, like a taglist. In this case it is very handy to have the FDL padded to a defined size.
 
-Padding can be activated with the -p/--pad option. The following example pads the FDL to a size of 1024 bytes.
+Padding can be activated with the ```-p```/```--pad``` option. The following example pads the FDL to a size of 1024 bytes.
 
 ```
 brynhild@hidin:~/fdltool-0.0.2$ % ./lua5.4 fdltool.lua --patch demo/patch_mac_and_oem.json --pad 0x0400 demo/FDL_NXHX90-JTAG_7833000r3_UseCaseC.fdl patched.fdl
@@ -245,7 +245,7 @@ brynhild@hidin:~/fdltool-0.0.2$  % ls -l patched.fdl
 ```
 
 Padding is done with 0xff by default. This is a good choice for all flash storages as erased sectors are filled with this pattern. Padding with 0xff just resembles unused space.
-However you can change the padding byte with the option "--padding-byte".
+However you can change the padding byte with the option ```--padding-byte```.
 
 # And what now?
 
