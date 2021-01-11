@@ -28,6 +28,40 @@ local atFileOutputKeys = pl.tablex.keys(atFileOutputTypes)
 table.sort(atFileOutputKeys)
 
 
+local function parse_uint8(tArg)
+  local strMsg
+  local num = tonumber(tArg)
+  if num~=nil then
+    if num~=math.floor(num) then
+      num = nil
+      strMsg = 'The number is not an integer.'
+    elseif num<0x00 or num>0xff then
+      num = nil
+      strMsg = 'The number must be in the range [0,255].'
+    end
+  end
+  return num, strMsg
+end
+
+
+
+local function parse_uint24(tArg)
+  local strMsg
+  local num = tonumber(tArg)
+  if num~=nil then
+    if num~=math.floor(num) then
+      num = nil
+      strMsg = 'The number is not an integer.'
+    elseif num<0x00 or num>0xffffff then
+      num = nil
+      strMsg = 'The number must be in the range [0,16777215].'
+    end
+  end
+  return num, strMsg
+end
+
+
+
 local tParser = argparse(__APPLICATION__, 'Decode, patch and convert FDLs.')
 tParser:flag('--version')
   :description('Show the version and exit.')
@@ -74,6 +108,18 @@ tParser:option('-s --skip-input')
   :convert(tonumber)
   :default(0)
   :target('ulSkip')
+tParser:option('-p --pad')
+  :description('Pad binary output to a minimum size of SIZE. The default is 0 which adds no padding.')
+  :argname('<SIZE>')
+  :convert(parse_uint24)
+  :default(0)
+  :target('ulPad')
+tParser:option('--padding-byte')
+  :description('Use BYTE for padding. The default is 0xff .')
+  :argname('<BYTE>')
+  :convert(parse_uint8)
+  :default(0xff)
+  :target('ucPaddingByte')
 tParser:option('-l --logfile')
   :description('Write all output to FILE.')
   :argname('<FILE>')
@@ -260,6 +306,13 @@ end
 local strOutputData
 if strOutputType=='BIN' then
   strOutputData = tFDL:fdl2bin(tFdlData)
+
+  -- Append eventual padding.
+  local sizOutputData = string.len(strOutputData)
+  local sizPadding = tArgs.ulPad - sizOutputData
+  if sizPadding>0 then
+    strOutputData = strOutputData .. string.rep(string.char(tArgs.ucPaddingByte), sizPadding)
+  end
 
 elseif strOutputType=='JSON' then
   strOutputData = tFDL:fdl2json(tFdlData)
