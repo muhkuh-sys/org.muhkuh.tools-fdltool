@@ -25,11 +25,11 @@ The FDL tool is written in LUA. It is tested with LUA5.4, but it should also wor
 * dkjson ( http://dkolf.de/src/dkjson-lua.fsl/home )
 * mhash for LUA ( https://github.com/muhkuh-sys/org.muhkuh.lua-mhash )
 
-Head over to the releases for ready-to-use bundles. There are builds for Windows 32 and 64 Bit, and some Ubuntu versions.
+Head over to the [releases](https://github.com/muhkuh-sys/org.muhkuh.tools-fdltool/releases) for ready-to-use bundles. There are builds for Windows 32 and 64 Bit, and some Ubuntu versions.
 
 # Quickstart
 
-Download the release for your platform, and extract the archive somewhere.
+Download the [release](https://github.com/muhkuh-sys/org.muhkuh.tools-fdltool/releases/latest) for your platform, and extract the archive somewhere.
 
 Open a shell, command prompt or power shell in the newly created folder. It should look similar to this:
 
