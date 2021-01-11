@@ -521,6 +521,30 @@ end
 
 
 
+function FDL:__parseMacs(atMac)
+  if atMac~=nil then
+    for uiCnt, tMac in ipairs(atMac) do
+      local aucMAC = tMac.aucMAC
+      -- Is this a human readable MAC?
+      local m1, m2, m3, m4, m5, m6 = string.match(aucMAC, '^(%x%x):(%x%x):(%x%x):(%x%x):(%x%x):(%x%x)$')
+      if m1~=nil then
+        aucMAC = string.char(tonumber(m1, 16), tonumber(m2, 16), tonumber(m3, 16), tonumber(m4, 16), tonumber(m5, 16), tonumber(m6, 16))
+        atMac[uiCnt].aucMAC = aucMAC
+      end
+    end
+  end
+end
+
+
+
+function FDL:__processSpecialFields(tFdl)
+  -- Accept a human-readable encoding for MACs.
+  self:__parseMacs(tFdl.atMacCOM)
+  self:__parseMacs(tFdl.atMacAPP)
+end
+
+
+
 function FDL:json2fdl(strJson)
   local tLog = self.tLog
   local tResult
@@ -531,6 +555,9 @@ function FDL:json2fdl(strJson)
     tLog.error('Failed to decode the JSON data: %s', tostring(strError))
 
   else
+    -- Process special fields like the MAC adress.
+    self:__processSpecialFields(tFdl)
+
     -- Encode the FDL to binary.
     local strFdl = self:fdl2bin(tFdl)
     -- Decode the binary to an FDL structure again.
@@ -658,6 +685,9 @@ end
 
 
 function FDL:patchFdl(tFdl, tPatches)
+  -- Process special fields like the MAC adress.
+  self:__processSpecialFields(tPatches)
+
   return self:__merge_tables({}, tFdl, tPatches)
 end
 
