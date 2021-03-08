@@ -256,6 +256,51 @@ brynhild@hidin:~/fdltool-0.0.2$  % ls -l patched.fdl
 Padding is done with 0xff by default. This is a good choice for all flash storages as erased sectors are filled with this pattern. Padding with 0xff just resembles unused space.
 However you can change the padding byte with the option ```--padding-byte```.
 
+## Midnight Commander integration
+
+Here is an example integration for the Midnight Commander (https://en.wikipedia.org/wiki/Midnight_Commander).
+
+1) Extract the fdltool to a directory of your choice. In this example the user ```brynhild``` extracts the tool to her home folder, so that the path ```/home/brynhild/fdltool-0.0.2``` is created.
+
+2) Start the Midnight Commander and open the menu (usually done with the key F9). Choose "Command" and "Edit extension file".
+Add the following command before the line "### Default ###":
+
+```
+# FDL Files
+shell/i/.fdl
+        View=%view{ascii} /home/brynhild/fdltool-0.0.2/lua5.4 /home/brynhild/fdltool-0.0.2/fdltool.lua --output-type TXT %f
+```
+
+Replace the 2 occurences of ```/home/brynhild/fdltool-0.0.2``` with the path from step 1.
+
+Save and exit the editor.
+
+3) Open the menu of the Midnight Commander again. Choose "Command" and "Edit menu file".
+Add the following lines at the end of the file:
+
+```
++ f \.fdl$
+f       Convert FDL to TEXT
+        /home/brynhild/fdltool-0.0.2/lua5.4 /home/brynhild/fdltool-0.0.2/fdltool.lua --output-type TXT %f `basename %f .fdl`.txt
+
++ f \.fdl$
+F       Convert FDL to JSON
+        /home/brynhild/fdltool-0.0.2/lua5.4 /home/brynhild/fdltool-0.0.2/fdltool.lua --output-type JSON %f `basename %f .fdl`.json
+```
+
+Replace the 4 occurences of ```/home/brynhild/fdltool-0.0.2``` with the path from step 1.
+
+Save and exit the editor.
+
+
+Now you have integrated the FDL tool.
+
+Press ```F3``` on a FDL file to view the contents as decoded text.
+
+Press ```F2``` followed by ```f``` on a FDL file to convert it to text.
+
+Press ```F2``` followed by ```F``` on a FDL file to convert it to JSON.
+
 # And what now?
 
 * Replace those binary FDLs in your repositories with JSON.
