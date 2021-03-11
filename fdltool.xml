@@ -6,7 +6,7 @@
 	      version="0.0.2"
 	      vcs-id="${PROJECT_VERSION_VCS}"
 	      extension="tar.gz">
-		<license name="PROPRIETARY"/>
+		<license name="GPL-2.0"/>
 		<author name="Christoph Thelen" url="https://www.hilscher.com/" />
 		<description>
 			Decode and patch Hilscher FDL structures.
