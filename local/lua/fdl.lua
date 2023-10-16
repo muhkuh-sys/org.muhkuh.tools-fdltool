@@ -115,6 +115,18 @@ function FDL:_init(tLog)
   atMacCOM[4]
     aucMAC:      $(fdl['atMacCOM[4].aucMAC'])
     aucReserved: $(fdl['atMacCOM[4].aucReserved'])
+  atMacCOM[5]
+    aucMAC:      $(fdl['atMacCOM[5].aucMAC'])
+    aucReserved: $(fdl['atMacCOM[5].aucReserved'])
+  atMacCOM[6]
+    aucMAC:      $(fdl['atMacCOM[6].aucMAC'])
+    aucReserved: $(fdl['atMacCOM[6].aucReserved'])
+  atMacCOM[7]
+    aucMAC:      $(fdl['atMacCOM[7].aucMAC'])
+    aucReserved: $(fdl['atMacCOM[7].aucReserved'])
+  atMacCOM[8]
+    aucMAC:      $(fdl['atMacCOM[8].aucMAC'])
+    aucReserved: $(fdl['atMacCOM[8].aucReserved'])
 
   atMacAPP[1]
     aucMAC:      $(fdl['atMacAPP[1].aucMAC'])
