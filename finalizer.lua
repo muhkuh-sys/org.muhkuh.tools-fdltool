@@ -33,8 +33,4 @@ if fResult~=true then
   error('Failed to write to ' .. tostring(strDstFile) .. ' : ' .. tostring(strMessage))
 end
 
-t:createPackageFile()
-t:createHashFile()
-t:createArchive('${install_base}/../../../${default_archive_name}', 'native')
-
 return true

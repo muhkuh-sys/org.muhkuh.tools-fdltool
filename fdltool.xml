@@ -21,4 +21,17 @@
 		<dependency group="com.github.toxicfrog" module="vstruct" artifact="vstruct" version="2.1"/>
 		<dependency group="de.dkolf" module="dkjson" artifact="dkjson" version="2.6"/>
 	</dependencies>
+	<actions>
+		<action name="finalizer" file="${prj_root}/finalizer.lua"/>
+		<action name="pack" path="${install_base}">
+			local t = ...
+			local tResult = true
+
+			t:createPackageFile()
+			t:createHashFile()
+			t:createArchive('${prj_root}/targets/${default_archive_name}', 'native')
+
+			return tResult
+		</action>
+	</actions>
 </jonchki-artifact>
