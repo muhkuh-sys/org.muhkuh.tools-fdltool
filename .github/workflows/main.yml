@@ -15,18 +15,6 @@ jobs:
     strategy:
       matrix:
         platform:
-        - # Ubuntu 19.10 x86
-          distribution-id: ubuntu
-          distribution-version: "19.10"
-          cpu-architecture: x86
-        - # Ubuntu 19.10 x86_64
-          distribution-id: ubuntu
-          distribution-version: "19.10"
-          cpu-architecture: x86_64
-        - # Ubuntu 19.10 arm64
-          distribution-id: ubuntu
-          distribution-version: "19.10"
-          cpu-architecture: arm64
         - # Ubuntu 20.04 x86_64
           distribution-id: ubuntu
           distribution-version: "20.04"
