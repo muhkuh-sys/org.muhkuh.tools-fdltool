@@ -23,10 +23,6 @@ jobs:
           distribution-id: ubuntu
           distribution-version: "20.04"
           cpu-architecture: arm64
-        - # Ubuntu 22.04 x86
-          distribution-id: ubuntu
-          distribution-version: "22.04"
-          cpu-architecture: x86
         - # Ubuntu 22.04 x86_64
           distribution-id: ubuntu
           distribution-version: "22.04"
