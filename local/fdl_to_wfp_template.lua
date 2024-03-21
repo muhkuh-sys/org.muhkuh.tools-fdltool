@@ -38,7 +38,8 @@ local atKnownFlashAreas = {
   ['Filesystem']   = { isErase = false, strFile = 'filesystem*.bin' },
   ['Remanent']     = { isErase = true },
   ['Management']   = { isErase = true },
-  ['APPcont']      = { isErase = false, strFile = '*.nae' }
+  ['APPcont']      = { isErase = false, strFile = '*.nae' },
+  ['FWUpdate']     = { isErase = false },
 }
 
 
