@@ -3,7 +3,7 @@
 	<info group="org.muhkuh.tools"
 	      module="fdltool"
 	      artifact="fdltool"
-	      version="0.1.0"
+	      version="0.1.1"
 	      vcs-id="${PROJECT_VERSION_VCS}"
 	      extension="tar.gz">
 		<license name="GPL-2.0"/>
